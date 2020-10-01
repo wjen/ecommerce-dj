@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Login
+{% endblock %}
+
+
+{% block content %}
+    <h1>Login Form</h1>
+
+    <form action="{% url 'login' %}" method='POST'>
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type='submit' class='btn btn-primary'>Login</button>
+        <button type="hidden" name="next" value="{{ next }}"></button>
+    </form>
+
+    {# Assumes you setup the password_reset view in your URLconf #}
+    <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+    
+{% endblock %}
