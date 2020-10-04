@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form action="" method="POST">
+    <table>
+        {{form.as_table}}   
+    </table>
+    <button class='btn btn-primary' type='submit'>Create listing</button>
+</form>
+
+{% endblock %}

@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import Listing, Bid, User, Comment
 from django.views.generic import ListView
+from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView
+
 # Create your views here.
 # def index(request):
 #     listing_list = Listing.objects.all()
@@ -27,3 +30,8 @@ def categories(request):
 def category_listings(request, category):
 	listings_by_category = Listing.objects.filter(category=category.upper())
 	return render(request, 'auctions/listing_list.html', {'listing_list': listings_by_category})
+
+class ListingCreateView(CreateView):
+	form_class = PostForm
+	model = Listing
+	fields = '__all__'
