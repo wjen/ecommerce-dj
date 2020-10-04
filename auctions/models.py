@@ -17,6 +17,9 @@ class Listing(models.Model):
         ('BABY', 'Baby'),
         ('TRAVEL', 'Travel'),
         ('CLOTHING', 'Clothes'),
+        ('ANIMALS', 'Animals'),
+        ('SPORTS', 'Sports'),
+        ('FOOD', 'Food')
     ]
     title = models.CharField(max_length=200)
     price = models.DecimalField(decimal_places=2, max_digits=10)
@@ -25,7 +28,7 @@ class Listing(models.Model):
     active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     description = models.TextField()
-    category = models.CharField(max_length=16, choices=LISTING_CATEGORIES, blank=True)
+    category = models.CharField(max_length=16, choices=LISTING_CATEGORIES)
     winner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True, null=True)
 
