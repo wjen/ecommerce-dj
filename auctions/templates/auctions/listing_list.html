@@ -1,21 +1,22 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-	{% if page %}
-		<h1 class='text-center'>{{page}}</h1>
-	{% endif %}
     {% if listing_list %}    
         <div class="row row-cols-1 row-cols-md-3">
         {% for listing in listing_list %}
             <div class="col mb-4">
                 <div class="card h-100">
-                    <img src="{{listing.image}}" class="card-img-top" alt={{ listing.title }}>
+                    <a href="{% url 'listing-detail' listing.id %}"><img src="{{listing.image}}" class="card-img-top" alt={{ listing.title }}></a>
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">{{listing.title}}</h5>
                         <p>Current Price: <strong>${{listing.price}}</strong></p>
 						<p class="card-text text-secondary">{{ listing.description| truncatechars:60  }}</p>
                         <a href="{% url 'listing-detail' listing.pk %}" class="btn btn-primary mt-auto btn-sm mb-2">View</a>
-						<a href="#" class="btn btn-secondary btn-sm">Add to watchlist</a>
+                        {% if listing in user.watchlist.all %}
+                            <a href="{% url 'toggle-watchlist-home' listing.id %}" class="btn btn-info btn-sm">Watching</a>
+                        {% else %}
+                            <a href="{% url 'toggle-watchlist-home' listing.id %}" class="btn btn-secondary btn-sm">Add to watchlist</a>
+                        {% endif %}
                     </div>
                     <div class="card-footer">
                         <small class="text-muted">Last updated 3 mins ago</small>
@@ -25,7 +26,7 @@
         {% endfor %}
     </div>
     {% else %}
-        <h3>There are currently no active listings</h3>
+        <h3>There are currently no listings</h3>
     {% endif %}
 
 

@@ -5,7 +5,10 @@ from django.views.generic.edit import CreateView
 from .forms import ListingForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django.db.models import Max, Count
+
 
 # Create your views here.
 # def index(request):
@@ -15,6 +18,7 @@ from django.http import HttpResponseRedirect
 class ListingListView(ListView):
 	model = Listing
 	paginate_by = 12
+
 
 class ListingListViewByActive(ListView):
 	model = Listing
@@ -28,7 +32,7 @@ def categories(request):
 	# categories = Listing.objects.filter(active=True).order_by('category')
 	categories = Listing.objects.filter(active=True).order_by("category").values_list('category', flat=True).distinct()
 	categories = [category.capitalize() for category in categories]
-	return render(request, 'auctions/categories.html', {'categories': categories})
+	return render(request, 'auctions/categories.html', {'categories': categories, 'request': request})
 
 def category_listings(request, category):
 	listings_by_category = Listing.objects.filter(category=category.upper())
@@ -44,6 +48,16 @@ class ListingCreateView(LoginRequiredMixin, CreateView):
 class ListingDetailView(DetailView):
 	model = Listing
 
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(** kwargs)
+		watching = False
+		# can get the request through self.request
+		if self.request.user.watchlist.filter(id=self.kwargs['pk']).exists():
+			watching = True
+		context['watching'] = watching
+		return context
+
+@login_required(login_url='/members/')
 def toggle_watchlist(request, pk):
 	# pass
 	listing = get_object_or_404(Listing, pk=pk)
@@ -53,14 +67,18 @@ def toggle_watchlist(request, pk):
 		request.user.watchlist.add(listing)
 	return HttpResponseRedirect(reverse('listing-detail', args=[str(pk)]))
 
+@login_required(login_url='/members/')
+def toggle_watchlist_home(request, pk):
+	# pass
+	listing = get_object_or_404(Listing, pk=pk)
+	if request.user.watchlist.filter(id=pk).exists():
+		request.user.watchlist.remove(listing)
+	else: 
+		request.user.watchlist.add(listing)
+	return HttpResponseRedirect(reverse('listings'))
 
+@login_required(login_url='/members/')
+def watchlist(request):
+	watchlist = request.user.watchlist.all()
 
-# 	post = get_object_or_404(Post, id=request.POST.get('post_id'))
-#     post = get_object_or_404(Post, id=request.POST.get('post_id'))
-#     like = False
-#     if post.likes.filter(id=request.user.id).exists():
-#         post.likes.remove(request.user)
-#     else:
-#         post.likes.add(request.user)
-#         like = True
-#     return HttpResponseRedirect(reverse('article_detail', args=[str(pk)]))
+	return render(request, 'auctions/listing_list.html', {'listing_list':watchlist})
