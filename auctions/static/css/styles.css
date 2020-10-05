@@ -3,3 +3,9 @@
     height: 15vw;
     object-fit: cover;
 }
+
+input.largerCheckbox { 
+    width: 40px; 
+    height: 40px; 
+    margin: 5px 0px;
+} 

@@ -2,7 +2,19 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User, Listing, Bid, Comment
 
-admin.site.register(User, UserAdmin)
-admin.site.register(Listing)
-admin.site.register(Bid)
+class ListingAdmin(admin.ModelAdmin):
+    list_display = ("id", "creator", "title", "timestamp", "price", "category", "active", "winner")
+
+class BidAdmin(admin.ModelAdmin):
+    list_display = ("id", "listing", "bidder", "timestamp", "bid_price")
+
+class CustomUserAdmin(UserAdmin):
+    filter_horizontal = ("watchlist",)
+    fieldsets = UserAdmin.fieldsets + (
+        ("Watchlist", {'fields': ('watchlist',)}),
+    )
+
+admin.site.register(User, CustomUserAdmin)
+admin.site.register(Listing, ListingAdmin)
+admin.site.register(Bid, BidAdmin)
 admin.site.register(Comment)
