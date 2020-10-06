@@ -1,34 +1,39 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <h1>Register</h1>
-    <br>
-    {% if form.errors %}
-        {% for error in errors %}
-            {error}
-        {% endfor %}
-    {% endif %}
-    <form action="{% url 'register' %}" method='POST'>
-        {% csrf_token %}
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder='Username' name='username'> 
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" placeholder='Password' name='password1'> 
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" placeholder='Password confirmation' name='password2'> 
-        </div>
-        <input type="submit" class='btn btn-primary' value='register'>
-        <ul class='text-muted small mt-2'>
-            <li>Your password can’t be too similar to your other personal information.</li>
-            <li>Your password must contain at least 8 characters.</li>
-            <li>Your password can’t be a commonly used password.</li>
-            <li>Your password can’t be entirely numeric.</li>
-        </ul>
-    </form>
-    <br>
+<div class="row justify-content-center">
+    <div class="col-lg-6 ">
+        <h1 class='text-center'>Register</h1>
+        <br>
+        {% if form.errors %}
+            {% for error in errors %}
+                {error}
+            {% endfor %}
+        {% endif %}
+        <form action="{% url 'register' %}" method='POST'>
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder='Username' name='username'> 
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder='Password' name='password1'> 
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder='Password confirmation' name='password2'> 
+            </div>
+            <input type="submit" class='btn btn-primary form-control' value='register'>
+            <ul class='text-muted small mt-2'>
+                <li>Your password can’t be too similar to your other personal information.</li>
+                <li>Your password must contain at least 8 characters.</li>
+                <li>Your password can’t be a commonly used password.</li>
+                <li>Your password can’t be entirely numeric.</li>
+            </ul>
+        </form>
+        <br>
+        Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+
+    </div>
+</div>
     
-    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
 
 {% endblock %}

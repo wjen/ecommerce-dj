@@ -6,12 +6,12 @@
 {% endblock %}
 
 {% block content %}
-
 <h2>Categories</h2>
-	<ul>
+<ul class="list-group list-group-flush">
 	{% for category in categories %}
-		<li><a href="{% url 'category-listings' category %}">{{category}}</a></li>
+	<li class="list-group-item"><a href="{% url 'category-listings' category %}">{{category}}</a>
+	<span class="badge badge-primary badge-pill">14</span>
+</li>
 	{% endfor %}
-	</ul>
-
+</ul>
 {% endblock %}
