@@ -2,40 +2,45 @@
 
 {% block content %}
 <div class="row">
-    <div class="card col-md-8">
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img src="{{ listing.image }}" class="card-img" alt="{{ listing.title }}">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title text-info">{{ listing.title }}</h5>
+    <div class="col-md-8">
+        <div class="card h-100">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src="{{ listing.image }}" class="card-img" alt="{{ listing.title }}">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title text-info">{{ listing.title }}</h5>
 
-                    <div class='watchlist'>
-                        {% if user.is_authenticated %}
-                            {% if watching %}
-                                <a class='btn btn-sm btn-primary mb-3' href="{% url 'toggle-watchlist' listing.pk %}">Watching</a> 
-                            {% else %}
-                                <a class='btn btn-sm btn-outline-primary mb-3' href="{% url 'toggle-watchlist' listing.pk %}">Add to Watchlist</a> 
+                        <div class='watchlist'>
+                            {% if user.is_authenticated %}
+                                {% if watching %}
+                                    <a class='btn btn-sm btn-primary mb-3' href="{% url 'toggle-watchlist' listing.pk %}">Watching</a> 
+                                {% else %}
+                                    <a class='btn btn-sm btn-outline-primary mb-3' href="{% url 'toggle-watchlist' listing.pk %}">Add to Watchlist</a> 
+                                {% endif %}
                             {% endif %}
+                        </div>
+
+                        <p><strong>Price: {{listing.price}}</strong></p>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        {% if user.is_authenticated %}
+                        <form action="{% url 'add-comment' listing.pk %}" method="POST" class='w-75'>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">$</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                            </div> 
+                            <button class='btn btn-success'> Place Bid </button>  
+                        </form>
+                        {% else %}
+                        <p><a href="{% url 'login' %}">Login</a> to bid</p>
                         {% endif %}
                     </div>
-
-                    <p><strong>Price: {{listing.price}}</strong></p>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    <form action="" method="POST" class='w-75'>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
-                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-                        </div> 
-                        <button class='btn btn-success'> Place Bid </button>  
-                    </form>
-                </div>
-            </div> 
-
+                </div> 
+            </div>
         </div>
     </div>
     <div class="col-md-4">
@@ -44,20 +49,46 @@
                 Add Comment
             </div>
             <div class="card-body">
-                <form action="">
-                    <div class="form-group">
+                {% if user.is_authenticated %}
+                <form action="" method="POST">
+                    <!-- <div class="form-group">
                         <input class='form-control' type="text" name='title' placeholder='Title'>
                     </div>
                     <div class="form-group">
                         <textarea class='form-control' rows='10' cols='50' maxlength='600' type="textarea" name='content' placeholder='Your comment' required></textarea>
-                    </div>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div> -->
+                    {{comment_form.as_p}}
+
+                    <a href="#" class="btn btn-primary">Add Comment</a>
                 </form>
-                
+                {% else %}
+                <p><a href="{% url 'login' %}">Login</a> to comment</p>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
-
+<div class="row mt-3">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                Comments
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for comment in comments_list %}
+                <li class="list-group-item">
+                    {{ comment.commenter }} - <strong>{{ comment.title }}</strong>
+                    <p class='my-2 ml-4'>{{comment.comment}}</p>
+                    <span class='small text-muted'>Posted on {{comment.timestamp}}</span>
+                </li>
+                {% empty %}
+                <li>
+                    No comments yet...
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>  
+</div>
 
 {% endblock %}

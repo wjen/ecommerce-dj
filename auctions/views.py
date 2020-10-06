@@ -2,12 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Listing, Bid, User, Comment
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView
-from .forms import ListingForm
+from .forms import ListingForm, CommentForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.db.models import Max, Count
+from django import forms
 
 
 # Create your views here.
@@ -47,15 +48,30 @@ class ListingCreateView(LoginRequiredMixin, CreateView):
 
 class ListingDetailView(DetailView):
 	model = Listing
-
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(** kwargs)
 		watching = False
+		comments_list = Comment.objects.all()
 		# can get the request through self.request
-		if self.request.user.watchlist.filter(id=self.kwargs['pk']).exists():
-			watching = True
+		if self.request.user.is_authenticated:
+			if self.request.user.watchlist.filter(id=self.kwargs['pk']).exists():
+				watching = True
 		context['watching'] = watching
+		context['comment_form'] = CommentForm()
+		context['comments_list'] = comments_list
 		return context
+
+def add_comment(request, pk):
+
+	form = CommentForm(request.POST)
+	listing = get_object_or_404(Listing, pk=pk)
+
+	if form.is_valid():
+		comment = form.cleaned_data['comment']
+		title = form.cleaned_data['title']
+		comment = Comment(comment=comment, title=title, commenter=request.user)
+		comment.save()
+		return HttpResponseRedirect(reverse('listing', args=(listing.id,)))
 
 @login_required(login_url='/members/')
 def toggle_watchlist(request, pk):
@@ -82,3 +98,7 @@ def watchlist(request):
 	watchlist = request.user.watchlist.all()
 
 	return render(request, 'auctions/listing_list.html', {'listing_list':watchlist})
+
+@login_required(login_url='/members/')
+def add_comment(request):
+	form = forms.ModelForm(request.POST)

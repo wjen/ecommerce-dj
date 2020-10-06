@@ -45,7 +45,7 @@ class Bid(models.Model):
         return f'{self.bidder} placed bid of ${self.bid_price} for {self.listing}'
 
 class Comment(models.Model):
-    title = models.CharField(max_length=155)
+    title = models.CharField(max_length=155, blank=True)
     comment = models.CharField(max_length=600, blank=True)
     commenter = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
