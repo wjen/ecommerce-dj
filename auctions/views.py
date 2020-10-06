@@ -10,16 +10,9 @@ from django.http import HttpResponseRedirect
 from django.db.models import Max, Count
 from django import forms
 
-
-# Create your views here.
-# def index(request):
-#     listing_list = Listing.objects.all()
-#     return render(request, 'index.html', {'listing_list': listing_list, 'page': 'All Listings'})
-
 class ListingListView(ListView):
 	model = Listing
 	paginate_by = 12
-
 
 class ListingListViewByActive(ListView):
 	model = Listing
@@ -114,3 +107,10 @@ def watchlist(request):
 	watchlist = request.user.watchlist.all()
 
 	return render(request, 'auctions/listing_list.html', {'listing_list':watchlist})
+
+def search(request):
+	if request.method == 'POST':
+		search_term = request.POST["search"]
+		searched_listings = Listing.objects.filter(title__contains=search_term)
+
+		return render(request, 'auctions/listing_list.html', {'listing_list': searched_listings})

@@ -16,4 +16,5 @@ urlpatterns = [
     path('toggle_watchlist/<int:pk>', views.toggle_watchlist, name='toggle-watchlist'),
     path('toggle_watchlist_home/<int:pk>', views.toggle_watchlist_home, name='toggle-watchlist-home'),
     path('watchlist', views.watchlist, name='watchlist'),
+    path('search', views.search, name='search'),
 ]
