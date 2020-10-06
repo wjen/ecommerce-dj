@@ -15,7 +15,7 @@
                         <div class='watchlist'>
                             {% if user.is_authenticated %}
                                 {% if watching %}
-                                    <a class='btn btn-sm btn-primary mb-3' href="{% url 'toggle-watchlist' listing.pk %}">Watching</a> 
+                                    <a class='btn btn-sm btn-primary mb-3' href="{% url 'toggle-watchlist' listing.pk %}"><i class="far fa-eye"></i> Watching</a> 
                                 {% else %}
                                     <a class='btn btn-sm btn-outline-primary mb-3' href="{% url 'toggle-watchlist' listing.pk %}">Add to Watchlist</a> 
                                 {% endif %}
@@ -24,6 +24,9 @@
 
                         <p><strong>Price: {{listing.price}}</strong></p>
                         <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        <p class="card-text"><strong>Category: </strong> {{ listing.category|title }}</p>
+                        <p class="card-text"><strong>Listed By: </strong> {{ listing.creator }}</p>
+                        <p class="card-text"><strong>Listed On: </strong> {{ listing.timestamp }}</p>
                         <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                         {% if user.is_authenticated %}
                         <form action="{% url 'add-comment' listing.pk %}" method="POST" class='w-75'>
@@ -44,7 +47,7 @@
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card">
+        <div class="card h-100">
             <div class="card-header">
                 Add Comment
             </div>
@@ -71,7 +74,7 @@
             <ul class="list-group list-group-flush">
                 {% for comment in comments_list %}
                 <li class="list-group-item">
-                    {{ comment.commenter }} - <strong>{{ comment.title }}</strong>
+                    <i class="fas fa-user-circle"></i> {{ comment.commenter }} - <strong>{{ comment.title }}</strong>
                     <p class='my-2 ml-4'>{{comment.comment}}</p>
                     <span class='small text-muted'>Posted on {{comment.timestamp}}</span>
                 </li>

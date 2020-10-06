@@ -23,10 +23,9 @@ class ListingListViewByActive(ListView):
 		return Listing.objects.filter(active=True)
 
 def categories(request):
-	# categories = Listing.objects.filter(active=True).order_by('category')
 	categories = Listing.objects.filter(active=True).order_by("category").values_list('category', flat=True).distinct()
 	categories = [category.capitalize() for category in categories]
-	return render(request, 'auctions/categories.html', {'categories': categories, 'request': request})
+	return render(request, 'auctions/categories.html', {'categories': categories})
 
 def category_listings(request, category):
 	listings_by_category = Listing.objects.filter(category=category.upper())

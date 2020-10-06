@@ -7,15 +7,15 @@ class ListingForm(forms.ModelForm):
         model = Listing
         fields = ('title', 'price', 'image', 'category', 'creator', 'active', 'description', 'winner')
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'price': forms.NumberInput(attrs={'class': 'form-control'}),
-            'image': forms.URLInput(attrs={'class': 'form-control'}),
-            'category': forms.Select(attrs={'class': 'form-control'}),
-            'creator': forms.Select(attrs={'class': 'form-control'}),
-            'active': forms.CheckboxInput(attrs={'class': 'largerCheckbox'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'maxlength': '600'}),
-            'winner': forms.Select(attrs={'class': 'form-control'}),
-            'creator': forms.TextInput(attrs={'class': 'form-control', 'id':'creator', 'type':'hidden', 'value': ''}),
+            'title': forms.TextInput(attrs={'class': 'form-control mb-2'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control mb-2'}),
+            'image': forms.URLInput(attrs={'class': 'form-control mb-2'}),
+            'category': forms.Select(attrs={'class': 'form-control mb-2'}),
+            'creator': forms.Select(attrs={'class': 'form-control mb-2'}),
+            'active': forms.CheckboxInput(attrs={'class': 'largerCheckbox mb-2'}),
+            'description': forms.Textarea(attrs={'class': 'form-control mb-2', 'maxlength': '600'}),
+            'winner': forms.Select(attrs={'class': 'form-control mb-2'}),
+            'creator': forms.TextInput(attrs={'class': 'form-control mb-2', 'id':'creator', 'type':'hidden', 'value': ''}),
         }
     # def __init__(self, *args, **kwargs):
     #     super(ListingForm, self).__init__(*args, **kwargs)
@@ -31,12 +31,12 @@ class CommentForm(forms.ModelForm):
     class Meta: 
         model = Comment
         fields = ('title', 'comment')
-    #     widgets = {
-    #         'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subject'}),
-    #         'comment': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Your Comment'})
-    #     }
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subject'}),
+            'comment': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Your Comment'})
+        }
 
-    # def __init__(self, *args, **kwargs):
-    #     super(CommentForm, self).__init__(*args, **kwargs)
-    #     self.fields['title'].label = ''
-    #     self.fields['comment'].label = ''
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.fields['title'].label = ''
+        self.fields['comment'].label = ''
