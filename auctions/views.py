@@ -43,35 +43,51 @@ class ListingCreateView(LoginRequiredMixin, CreateView):
 	login_url = '/members/'
 	form_class = ListingForm
 	model = Listing
-	# fields = '__all__'
 	success_url = reverse_lazy('home')
 
-class ListingDetailView(DetailView):
-	model = Listing
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(** kwargs)
-		watching = False
-		comments_list = Comment.objects.all()
-		# can get the request through self.request
-		if self.request.user.is_authenticated:
-			if self.request.user.watchlist.filter(id=self.kwargs['pk']).exists():
-				watching = True
-		context['watching'] = watching
-		context['comment_form'] = CommentForm()
-		context['comments_list'] = comments_list
-		return context
 
-def add_comment(request, pk):
-
-	form = CommentForm(request.POST)
+def listing_detail(request, pk):
 	listing = get_object_or_404(Listing, pk=pk)
+	comments_list = Comment.objects.all()
+	comment_form = CommentForm()
+	watching = False
+	if request.user.is_authenticated:
+		if request.user.watchlist.filter(id=pk).exists():
+			watching = True
+	return render(request, 'auctions/listing_detail.html', {
+		'listing': listing, 
+		'watching': watching, 
+		'comment_form':comment_form,
+		'comments_list':comments_list
+	})
+# class ListingDetailView(DetailView):
+# 	model = Listing
 
-	if form.is_valid():
-		comment = form.cleaned_data['comment']
-		title = form.cleaned_data['title']
-		comment = Comment(comment=comment, title=title, commenter=request.user)
-		comment.save()
-		return HttpResponseRedirect(reverse('listing', args=(listing.id,)))
+# 	def get_context_data(self, **kwargs):
+# 		context = super().get_context_data(** kwargs)
+# 		watching = False
+# 		comments_list = Comment.objects.all()
+# 		# can get the request through self.request
+# 		if self.request.user.is_authenticated:
+# 			if self.request.user.watchlist.filter(id=self.kwargs['pk']).exists():
+# 				watching = True
+# 		context['watching'] = watching
+# 		context['comment_form'] = CommentForm()
+# 		context['comments_list'] = comments_list
+# 		return context
+
+@login_required(login_url='/members/')
+def add_comment(request, pk):
+	if request.method == 'POST':
+		form = CommentForm(request.POST)
+		listing = get_object_or_404(Listing, pk=pk)
+
+		if form.is_valid():
+			comment = form.cleaned_data['comment']
+			title = form.cleaned_data['title']
+			comment = Comment(listing=listing, comment=comment, title=title, commenter=request.user)
+			comment.save()
+		return HttpResponseRedirect(reverse('listing-detail', args=(listing.id,)))
 
 @login_required(login_url='/members/')
 def toggle_watchlist(request, pk):
@@ -98,7 +114,3 @@ def watchlist(request):
 	watchlist = request.user.watchlist.all()
 
 	return render(request, 'auctions/listing_list.html', {'listing_list':watchlist})
-
-@login_required(login_url='/members/')
-def add_comment(request):
-	form = forms.ModelForm(request.POST)

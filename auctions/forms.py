@@ -31,12 +31,12 @@ class CommentForm(forms.ModelForm):
     class Meta: 
         model = Comment
         fields = ('title', 'comment')
-        widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subject'}),
-            'comment': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Your Comment'})
-        }
+    #     widgets = {
+    #         'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subject'}),
+    #         'comment': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Your Comment'})
+    #     }
 
-    def __init__(self, *args, **kwargs):
-        super(CommentForm, self).__init__(*args, **kwargs)
-        self.fields['title'].label = ''
-        self.fields['comment'].label = ''
+    # def __init__(self, *args, **kwargs):
+    #     super(CommentForm, self).__init__(*args, **kwargs)
+    #     self.fields['title'].label = ''
+    #     self.fields['comment'].label = ''
