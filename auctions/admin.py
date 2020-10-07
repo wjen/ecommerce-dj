@@ -8,13 +8,16 @@ class ListingAdmin(admin.ModelAdmin):
 class BidAdmin(admin.ModelAdmin):
     list_display = ("id", "listing", "bidder", "timestamp", "bid_price")
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ("id", "commenter", "timestamp", "comment")
+
+
 class CustomUserAdmin(UserAdmin):
     filter_horizontal = ("watchlist",)
     fieldsets = UserAdmin.fieldsets + (
         ("Watchlist", {'fields': ('watchlist',)}),
     )
-
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Listing, ListingAdmin)
 admin.site.register(Bid, BidAdmin)
-admin.site.register(Comment)
+admin.site.register(Comment, CommentAdmin)

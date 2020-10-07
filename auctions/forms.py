@@ -1,5 +1,33 @@
 from django import forms
 from .models import Listing, Bid, Comment
+from django.core.exceptions import ValidationError
+
+class BidForm(forms.ModelForm):
+    class Meta: 
+        model = Bid
+        fields = ['bid_price']
+        widgets = {
+            'bid_price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter Bid'})
+        }
+    def __init__(self, *args, **kwargs):
+        # Add listing from the second argument passed in
+        self.listing = kwargs.pop('listing', None)
+        super(BidForm, self).__init__(*args, **kwargs)
+        self.fields['bid_price'].label = ''
+    
+    # validation for bid price 
+    def clean_bid_price(self):
+        bid_price = self.cleaned_data['bid_price']
+        bids = Bid.objects.filter(listing=self.listing)
+        if bids:
+            highest_bid_price = bids.order_by('bid_price').last().bid_price
+            if bid_price <= highest_bid_price:
+                raise ValidationError('Bid must be greater than any bids already placed.')
+        else:
+            if bid_price < self.listing.price:
+                raise ValidationError('Bid must be as large as the starting price.')
+
+        return bid_price
 
 class ListingForm(forms.ModelForm):
 
@@ -17,6 +45,7 @@ class ListingForm(forms.ModelForm):
             'winner': forms.Select(attrs={'class': 'form-control mb-2'}),
             'creator': forms.TextInput(attrs={'class': 'form-control mb-2', 'id':'creator', 'type':'hidden', 'value': ''}),
         }
+    # Remove comment for no labels
     # def __init__(self, *args, **kwargs):
     #     super(ListingForm, self).__init__(*args, **kwargs)
     #     self.fields['title'].label = ''

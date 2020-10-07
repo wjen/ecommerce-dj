@@ -7,7 +7,6 @@ from django.urls import reverse_lazy
 # provides class-based messages
 from django.contrib.messages.views import SuccessMessageMixin
 
-# Create your views here.
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -24,8 +23,7 @@ def register(request):
     context = {'form': form}
     return render(request, 'registration/register.html', context)
 
-# mixin has to be first to work
 class PasswordsChangeView(SuccessMessageMixin, PasswordChangeView):
     form_class = PasswordChangeForm
-    success_message = "Hi Password changed successfully!"
+    success_message = "Password changed successfully!"
     success_url = reverse_lazy('index')
