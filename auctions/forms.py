@@ -63,8 +63,8 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('title', 'comment')
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subject'}),
-            'comment': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Your Comment'})
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subject', 'required': True}),
+            'comment': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Your Comment', 'required': True})
         }
 
     def __init__(self, *args, **kwargs):
