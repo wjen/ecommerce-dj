@@ -3,7 +3,7 @@
 ## Project Overview:
 
 
-Deployed on heroku: [https://rmw-mobile-web-specialist.herokuapp.com/](https://frontend-mws.herokuapp.com/)
+Deployed on heroku: [https://commerce-dj.herokuapp.com/](https://commerce-dj.herokuapp.com/)
 
 An ecommerce auctions website built with django/python. Provides a full featured authentication system along with email password reset. Features and technologies include:
 

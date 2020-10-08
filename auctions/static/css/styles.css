@@ -4,13 +4,10 @@
     object-fit: cover;
 }
 
-input.largerCheckbox { 
-    width: 40px; 
-    height: 40px; 
-    margin: 5px 0px;
-} 
-
-
+/* pagination */
+.pagination {
+    margin-bottom: 15px;
+}
  /* Small devices (landscape phones, less than 768px) */
 
 @media (max-width: 767.98px) { 

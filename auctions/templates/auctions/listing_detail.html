@@ -10,7 +10,8 @@
                 </div>
                 <div class="col-md-7">
                     <div class="card-body">
-                        <h5 class="card-title text-info d-inline">{{ listing.title }}  {% if user == listing.creator %} - <a href='{% url "update-listing" listing.pk%}' class='text-muted small badge badge-light'><i class="fas fa-edit"></i>Edit</a> {% endif %}</h5> 
+                        <h5 class="card-title text-info d-inline">{{ listing.title }}  
+                            {% if user == listing.creator %} - <a href='{% url "update-listing" listing.pk%}' class='text-muted small badge badge-light'><i class="fas fa-edit"></i>Edit</a> {% endif %}</h5> 
                         {% if listing.active %}      
                             <div class='watchlist mt-3'>
                                 {% if user.is_authenticated %}
