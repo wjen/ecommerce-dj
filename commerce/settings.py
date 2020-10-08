@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '6z8q+65w1_l999enmz@ajl%x=&&(+-
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['commerce-dj.herokuapp.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
