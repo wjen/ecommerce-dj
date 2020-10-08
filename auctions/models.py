@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+# Used to generate URLs by reversing the URL patterns
+from django.urls import reverse
 # Create your models here.
 
 class User(AbstractUser):
@@ -34,6 +35,10 @@ class Listing(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        # Returns the url to access a detail record for thislisting.
+        return reverse('listing-detail', args=[str(self.id)])
 
 class Bid(models.Model):
     bid_price = models.DecimalField(decimal_places=2, max_digits=10)

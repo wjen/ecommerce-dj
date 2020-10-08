@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import ListingListView, ListingListViewByActive, categories, ListingCreateView, toggle_watchlist, toggle_watchlist_home, watchlist, add_comment
+from .views import ListingListView, ListingListViewByActive, ListingCreateView, ListingUpdateView
 from django.views.generic import RedirectView
 
 urlpatterns = [
@@ -12,6 +12,7 @@ urlpatterns = [
     path('listing/<int:pk>/add_comment', views.add_comment, name='add-comment'),
     path('listing/<int:pk>/add_bid', views.add_bid, name='add-bid'),
     path('listing/<int:pk>/delete_listing', views.delete_listing, name='delete-listing'),
+    path('listings/<int:pk>/update_listing', views.ListingUpdateView.as_view(), name='update-listing'),
     path('categories', views.categories, name='categories'),
     path('categories/<str:category>', views.category_listings, name='category-listings'),
     path('toggle_watchlist/<int:pk>', views.toggle_watchlist, name='toggle-watchlist'),

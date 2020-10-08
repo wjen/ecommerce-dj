@@ -29,22 +29,24 @@ class BidForm(forms.ModelForm):
 
         return bid_price
 
+
 class ListingForm(forms.ModelForm):
 
     class Meta: 
         model = Listing
-        fields = ('title', 'price', 'image', 'category', 'creator', 'active', 'description', 'winner')
+        fields = ('title', 'price', 'image', 'category', 'creator', 'description')
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control mb-2'}),
             'price': forms.NumberInput(attrs={'class': 'form-control mb-2'}),
             'image': forms.URLInput(attrs={'class': 'form-control mb-2'}),
             'category': forms.Select(attrs={'class': 'form-control mb-2'}),
             'creator': forms.Select(attrs={'class': 'form-control mb-2'}),
-            'active': forms.CheckboxInput(attrs={'class': 'largerCheckbox mb-2'}),
+            # 'active': forms.CheckboxInput(attrs={'class': 'largerCheckbox mb-2'}),
             'description': forms.Textarea(attrs={'class': 'form-control mb-2', 'maxlength': '600'}),
-            'winner': forms.Select(attrs={'class': 'form-control mb-2'}),
+            # 'winner': forms.Select(attrs={'class': 'form-control mb-2'}),
             'creator': forms.TextInput(attrs={'class': 'form-control mb-2', 'id':'creator', 'type':'hidden', 'value': ''}),
         }
+
     # Remove comment for no labels
     # def __init__(self, *args, **kwargs):
     #     super(ListingForm, self).__init__(*args, **kwargs)

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Listing, Bid, User, Comment
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from .forms import ListingForm, CommentForm, BidForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -166,3 +166,8 @@ def delete_listing(request, pk):
 	listing.save()
 
 	return HttpResponseRedirect(reverse('listings'))
+
+class ListingUpdateView(LoginRequiredMixin, UpdateView):
+	login_url = '/members/'
+	model = Listing
+	form_class = ListingForm
