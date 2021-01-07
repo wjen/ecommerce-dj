@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import dj_database_url
 from pathlib import Path
 import os
 
@@ -21,7 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '6z8q+65w1_l999enmz@ajl%x=&&(+-+4_0q)yrgthxniw3g@_#')
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY', '6z8q+65w1_l999enmz@ajl%x=&&(+-+4_0q)yrgthxniw3g@_#')
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
@@ -142,7 +144,6 @@ EMAIL_PORT = 587
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 # Heroku: Update database configuration from $DATABASE_URL.
-import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
